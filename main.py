@@ -214,7 +214,7 @@ def check_queue():
 if __name__ == "__main__":
     # Create the main window
     root = tk.Tk()
-    root.title("Image Processor")
+    root.title("Image Resizer")
     root.geometry("500x300")
     root.resizable(False, False)
     
@@ -226,7 +226,7 @@ if __name__ == "__main__":
     main_frame.pack(fill=tk.BOTH, expand=True)
     
     # Title
-    title_label = ttk.Label(main_frame, text="Image Subject Resizer", font=("Helvetica", 16))
+    title_label = ttk.Label(main_frame, text="Image Resizer", font=("Helvetica", 16))
     title_label.pack(pady=(0, 20))
     
     # Input folder selection
