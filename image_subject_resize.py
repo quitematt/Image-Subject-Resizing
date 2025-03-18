@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import filedialog, ttk
 import threading
 import queue
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(
@@ -85,10 +86,15 @@ def resize_and_center_image(image_path, output_path):
         flagged_path = None
 
         if min(w, h) < 485:
-            flagged_path = (
-                output_path.replace(".", "_CHECK_PIXELATION.") if "." in output_path 
-                else output_path + "_CHECK_PIXELATION"
-            )
+            output_path = Path(output_path)
+            flagged_path = output_path.parent / f"{output_path.stem}_CHECK_PIXELATION{output_path.suffix}"
+
+            # Removed in favour of pathlib implementation
+            # flagged_path = (
+            #     output_path.replace(".", "_CHECK_PIXELATION.") if "." in output_path 
+            #     else output_path + "_CHECK_PIXELATION"
+            # )
+
             logger.warning(f"Image dimensions too small (w: {w}, h: {h}). May pixelate: {flagged_path}")
 
         # Resize image
@@ -104,7 +110,7 @@ def resize_and_center_image(image_path, output_path):
 
         # Save output
         save_path = flagged_path if flagged_path else output_path
-        canvas.save(save_path, "PNG")
+        canvas.save(save_path)
         logger.info(f"Saved to: {save_path}")
         logger.info("-" * 40)
         
@@ -137,7 +143,7 @@ def process_directory(input_folder, output_folder, progress_queue=None):
     
     for i, filename in enumerate(image_files):
         input_path = os.path.join(input_folder, filename)
-        output_path = os.path.join(output_folder, os.path.splitext(filename)[0] + ".png")
+        output_path = os.path.join(output_folder, filename)
         
         logger.info(f"Processing file {i+1} of {total_files}: {filename}")
         

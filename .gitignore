@@ -1,4 +1,4 @@
 *.log
 /dist
 /build
-main.spec
+image_subject_resize.spec
